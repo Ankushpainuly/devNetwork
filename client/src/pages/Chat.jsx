@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import api from "../api/axios";
 import UserAvatar from "../components/UserAvatar";
 import PremiumBadge from "../components/PremiumBadge";
+import { connectAppSocket } from "../socket/appSocket";
 
 const formatDateTime = (dateString) => {
   if (!dateString) return "";
@@ -44,6 +45,33 @@ export default function Chat() {
     };
 
     loadChatList();
+  }, []);
+
+  useEffect(() => {
+    const socket = connectAppSocket();
+
+    const handlePresenceUpdate = ({ userId, isOnline, lastSeen }) => {
+      setChatList((current) =>
+        current.map((item) =>
+          item.otherUser?._id === userId
+            ? {
+                ...item,
+                otherUser: {
+                  ...item.otherUser,
+                  isOnline,
+                  lastSeen,
+                },
+              }
+            : item
+        )
+      );
+    };
+
+    socket.on("presence:update", handlePresenceUpdate);
+
+    return () => {
+      socket.off("presence:update", handlePresenceUpdate);
+    };
   }, []);
 
   return (

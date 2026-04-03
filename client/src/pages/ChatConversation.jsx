@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { io } from "socket.io-client";
 import toast from "react-hot-toast";
 import api from "../api/axios";
 import UserAvatar from "../components/UserAvatar";
 import PremiumBadge from "../components/PremiumBadge";
-
-const socketUrl = api.defaults.baseURL.replace(/\/api$/, "");
+import { connectAppSocket } from "../socket/appSocket";
 
 const formatMessageTime = (dateString) =>
   new Date(dateString).toLocaleTimeString([], {
@@ -49,11 +47,9 @@ export default function ChatConversation() {
   useEffect(() => {
     if (!user?._id) return;
 
-    socketRef.current = io(socketUrl, {
-      withCredentials: true,
-    });
+    socketRef.current = connectAppSocket();
 
-    socketRef.current.on("messageReceived", ({ message, targetUserId: roomUserId }) => {
+    const handleMessageReceived = ({ message, targetUserId: roomUserId }) => {
       if (roomUserId !== targetUserId) return;
 
       setMessages((current) => {
@@ -61,9 +57,9 @@ export default function ChatConversation() {
         if (alreadyExists) return current;
         return [...current, message];
       });
-    });
+    };
 
-    socketRef.current.on("messagesSeen", ({ messageIds }) => {
+    const handleMessagesSeen = ({ messageIds }) => {
       setMessages((current) =>
         current.map((message) =>
           messageIds.includes(message._id)
@@ -71,15 +67,33 @@ export default function ChatConversation() {
             : message
         )
       );
-    });
+    };
 
-    socketRef.current.on("connect_error", () => {
-      toast.error("Chat connection failed");
-    });
+    const handlePresenceUpdate = ({ userId, isOnline, lastSeen }) => {
+      if (userId !== targetUserId) return;
+
+      setActiveChat((current) =>
+        current
+          ? {
+              ...current,
+              targetUser: {
+                ...current.targetUser,
+                isOnline,
+                lastSeen,
+              },
+            }
+          : current
+      );
+    };
+
+    socketRef.current.on("messageReceived", handleMessageReceived);
+    socketRef.current.on("messagesSeen", handleMessagesSeen);
+    socketRef.current.on("presence:update", handlePresenceUpdate);
 
     return () => {
-      socketRef.current?.disconnect();
-      socketRef.current = null;
+      socketRef.current?.off("messageReceived", handleMessageReceived);
+      socketRef.current?.off("messagesSeen", handleMessagesSeen);
+      socketRef.current?.off("presence:update", handlePresenceUpdate);
     };
   }, [user?._id, targetUserId]);
   

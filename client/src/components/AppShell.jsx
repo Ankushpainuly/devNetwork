@@ -1,10 +1,11 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
 import api from "../api/axios";
 import { clearUser } from "../features/auth/userSlice";
 import UserAvatar from "./UserAvatar";
+import { connectAppSocket, disconnectAppSocket } from "../socket/appSocket";
 
 const navItems = [
   { to: "/feed", label: "Feed" },
@@ -28,9 +29,26 @@ export default function AppShell({ children }) {
   const navigate = useNavigate();
   const [showMore, setShowMore] = useState(false);
 
+  useEffect(() => {
+    if (!user?._id) return;
+
+    const socket = connectAppSocket();
+    const handleConnectError = () => {
+      toast.error("Realtime connection failed");
+    };
+
+    socket.on("connect_error", handleConnectError);
+
+    return () => {
+      socket.off("connect_error", handleConnectError);
+      disconnectAppSocket();
+    };
+  }, [user?._id]);
+
   const handleLogout = async () => {
     try {
       await api.post("/auth/logout");
+      disconnectAppSocket();
       dispatch(clearUser());
       toast.success("Logged out");
       navigate("/login", { replace: true });

@@ -34,6 +34,36 @@ const ensureAcceptedConnection = async (userId, targetUserId) =>
 
 const userPreviewFields = "name avatar headline subscription isOnline lastSeen";
 
+const connectedUsers = new Map();
+
+const emitPresenceUpdate = (io, userId, isOnline, lastSeen) => {
+  io.emit("presence:update", {
+    userId: userId.toString(),
+    isOnline,
+    lastSeen: lastSeen || null,
+  });
+};
+
+const markUserOnline = async (io, userId) => {
+  await User.findByIdAndUpdate(userId, {
+    isOnline: true,
+    $unset: { lastSeen: 1 },
+  });
+
+  emitPresenceUpdate(io, userId, true, null);
+};
+
+const markUserOffline = async (io, userId) => {
+  const lastSeen = new Date();
+
+  await User.findByIdAndUpdate(userId, {
+    isOnline: false,
+    lastSeen,
+  });
+
+  emitPresenceUpdate(io, userId, false, lastSeen);
+};
+
 export const createSocketServer = (httpServer) => {
   const io = new Server(httpServer, {
     cors: {
@@ -68,6 +98,19 @@ export const createSocketServer = (httpServer) => {
   });
 
   io.on("connection", (socket) => {
+    const userId = socket.user._id.toString();
+    const activeSockets = connectedUsers.get(userId) || new Set();
+    const wasOffline = activeSockets.size === 0;
+
+    activeSockets.add(socket.id);
+    connectedUsers.set(userId, activeSockets);
+
+    if (wasOffline) {
+      markUserOnline(io, userId).catch((error) => {
+        console.error("Failed to mark user online:", error);
+      });
+    }
+
     socket.on("joinChat", async ({ targetUserId }) => {
       if (!targetUserId) return;
 
@@ -167,6 +210,22 @@ export const createSocketServer = (httpServer) => {
       }
     });
 
+    socket.on("disconnect", () => {
+      const userSockets = connectedUsers.get(userId);
+
+      if (!userSockets) return;
+
+      userSockets.delete(socket.id);
+
+      if (userSockets.size > 0) {
+        return;
+      }
+
+      connectedUsers.delete(userId);
+      markUserOffline(io, userId).catch((error) => {
+        console.error("Failed to mark user offline:", error);
+      });
+    });
   });
 
   return io;

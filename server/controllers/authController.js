@@ -116,8 +116,6 @@ export const verifyOTP = async (req, res) => {
 
     // ─── MARK USER AS VERIFIED ────────────────────────────
     user.isVerified = true;
-    user.isOnline = true;
-    user.lastSeen = undefined;
     user.otp = undefined; // remove OTP from DB
     user.otpExpiry = undefined; // remove expiry from DB
     user.lastOtpSentAt = undefined; // reset OTP sent time
@@ -280,10 +278,6 @@ export const login = async (req, res) => {
       }
   
       // ─── GENERATE TOKEN + SET COOKIE ──────────────────────
-      user.isOnline = true;
-      user.lastSeen = undefined;
-      await user.save();
-
       const token = user.getJWT();
   
       res.cookie("token", token, {
@@ -322,10 +316,6 @@ export const login = async (req, res) => {
 
 
 export const logout = async (req, res) => {
-    req.user.isOnline = false;
-    req.user.lastSeen = new Date();
-    await req.user.save();
-
     res.cookie("token", "", {
       httpOnly: true,
       secure:   process.env.NODE_ENV === "production",
@@ -340,10 +330,6 @@ export const logout = async (req, res) => {
 };
 
 export const getMe = async (req, res) => {
-    req.user.isOnline = true;
-    req.user.lastSeen = undefined;
-    await req.user.save();
-
     // req.user is already fetched by protect middleware
     // protect already has try/catch
     // here we are just sending the response
@@ -495,10 +481,6 @@ export const resetPassword = async (req, res) => {
 export const googleCallback = async (req, res) => {
   try {
     const user = req.user;
-
-    user.isOnline = true;
-    user.lastSeen = undefined;
-    await user.save();
 
     const token = user.getJWT();
 
