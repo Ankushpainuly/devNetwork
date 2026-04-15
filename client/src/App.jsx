@@ -21,6 +21,7 @@ import BlockedUsers from "./pages/BlockedUsers";
 import Chat from "./pages/Chat";
 import ChatConversation from "./pages/ChatConversation";
 import Premium from "./pages/Premium";
+import Landing from "./pages/Landing";
 
 function PublicRoute({ children }) {
   const { user } = useSelector((store) => store.user);
@@ -28,7 +29,6 @@ function PublicRoute({ children }) {
   return !user ? children : <Navigate to="/feed" replace />;
 }
 
-// ─── PROTECTED ROUTE ──────────────────────────────────────
 const ProtectedRoute = ({ children }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ const ProtectedRoute = ({ children }) => {
         const res = await api.get("/auth/me");
         dispatch(setUser(res.data.user));
       } catch {
-        navigate("/login", { replace: true }); // ✅ programmatic navigation
+        navigate("/login", { replace: true });
       } finally {
         setLoading(false);
       }
@@ -78,7 +78,6 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
-  // No user after loading → already navigated in catch
   if (!user) return null;
 
   return children;
@@ -97,10 +96,15 @@ function ProtectedShell() {
 function App() {
   return (
     <Routes>
-      {/* ── DEFAULT ── */}
-      <Route path="/" element={<Navigate to="/feed" replace />} />
+      <Route
+        path="/"
+        element={
+          <PublicRoute>
+            <Landing />
+          </PublicRoute>
+        }
+      />
 
-      {/* ── PUBLIC ROUTES ── */}
       <Route
         path="/login"
         element={
@@ -120,8 +124,6 @@ function App() {
       <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
 
-
-      {/* ── PROTECTED ROUTES ── */}
       <Route
         path="/auth/google/success"
         element={
@@ -145,7 +147,6 @@ function App() {
         <Route path="/blocked" element={<BlockedUsers />} />
       </Route>
 
-      {/* ── 404 ── */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
