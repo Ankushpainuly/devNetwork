@@ -40,12 +40,14 @@ app.use("/api/payments", paymentRouter);
 
 createSocketServer(httpServer);
 
+const PORT = process.env.PORT || 8080;
+
 connectDB()
   .then(() => {
     console.log("Database Connect Successfully!!");
 
-    httpServer.listen(process.env.PORT, () => {
-      console.log("server is listining on ", process.env.PORT);
+    httpServer.listen(PORT, () => {
+      console.log("server is listining on ", PORT);
     });
   })
   .catch((err) => {

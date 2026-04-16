@@ -1,19 +1,20 @@
 import axios from "axios";
 
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+
 const api = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL,
   withCredentials: true,
 });
 
 api.interceptors.response.use(
-    (res) => res,  // ← success → just return response normally
-  
-    (err) => {     // ← error → runs on EVERY failed request
-      if (err.response?.status === 401) {
-        window.location.href = "/login"; // auto redirect if not logged in
-      }
-      return Promise.reject(err); // still throw error so catch() works
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401) {
+      window.location.href = "/login";
     }
-  );
+    return Promise.reject(err);
+  }
+);
 
 export default api;

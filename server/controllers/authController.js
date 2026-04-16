@@ -3,6 +3,17 @@ import { generateOTP, getOTPExpiry } from "../utils/generateOtp.js";
 import { sendOTPEmail, sendPasswordResetEmail } from "../utils/sendEmail.js";
 import jwt from "jsonwebtoken";
 
+const getCookieOptions = () => {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  };
+};
+
 
 // @POST /api/auth/signup
 export const signup = async (req, res) => {
@@ -128,12 +139,7 @@ export const verifyOTP = async (req, res) => {
 
 
      // ✅ Cookie with proper security options
-     res.cookie("token", token, {
-      httpOnly: true,
-      secure:   process.env.NODE_ENV === "production",
-      sameSite: "strict", 
-      maxAge:   7 * 24 * 60 * 60 * 1000,
-    })
+     res.cookie("token", token, getCookieOptions())
 
     // ─── RESPONSE ─────────────────────────────────────────
     res.status(200).json({
@@ -280,12 +286,7 @@ export const login = async (req, res) => {
       // ─── GENERATE TOKEN + SET COOKIE ──────────────────────
       const token = user.getJWT();
   
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure:   process.env.NODE_ENV === "production",
-        sameSite: "strict",
-        maxAge:   7 * 24 * 60 * 60 * 1000,
-      });
+      res.cookie("token", token, getCookieOptions());
   
       // ─── RESPONSE ─────────────────────────────────────────
       res.status(200).json({
@@ -317,10 +318,8 @@ export const login = async (req, res) => {
 
 export const logout = async (req, res) => {
     res.cookie("token", "", {
-      httpOnly: true,
-      secure:   process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      expires:  new Date(0), // ← sets expiry to past → browser deletes it immediately
+      ...getCookieOptions(),
+      expires: new Date(0), // ← sets expiry to past → browser deletes it immediately
     });
   
     res.status(200).json({
@@ -484,12 +483,7 @@ export const googleCallback = async (req, res) => {
 
     const token = user.getJWT();
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure:   process.env.NODE_ENV === "production",
-      sameSite: "strict", 
-      maxAge:   7 * 24 * 60 * 60 * 1000,
-    })
+    res.cookie("token", token, getCookieOptions())
 
     // Redirect to frontend
     res.redirect(`${process.env.CLIENT_URL}/auth/google/success`);
