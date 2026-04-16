@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 import toast from "react-hot-toast";
 
+const googleAuthUrl = `${api.defaults.baseURL}/auth/google`;
+
 export default function Signup() {
   const navigate = useNavigate();
 
@@ -43,7 +45,7 @@ export default function Signup() {
 
   // ─── GOOGLE LOGIN ─────────────────────────────────────
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8080/api/auth/google";
+    window.location.href = googleAuthUrl;
   };
 
   return (

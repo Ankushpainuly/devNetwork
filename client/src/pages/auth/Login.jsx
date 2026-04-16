@@ -5,6 +5,8 @@ import api from "../../api/axios";
 import toast from "react-hot-toast";
 import { setUser } from "../../features/auth/userSlice";
 
+const googleAuthUrl = `${api.defaults.baseURL}/auth/google`;
+
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -63,7 +65,7 @@ useEffect(() => {
 
   // ─── GOOGLE LOGIN ─────────────────────────────────────
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8080/api/auth/google";
+    window.location.href = googleAuthUrl;
   };
 
   return (
