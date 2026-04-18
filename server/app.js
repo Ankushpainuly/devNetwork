@@ -18,6 +18,8 @@ import passport from "passport";
 
 
 const app = express();
+app.set('trust proxy', 1);
+
 const httpServer = http.createServer(app);
 app.use("/api/payments/webhook", express.raw({ type: "application/json" }));
 app.use(express.json());
