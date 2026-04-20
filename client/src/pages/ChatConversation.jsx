@@ -115,6 +115,10 @@ export default function ChatConversation() {
     };
 
     loadChat();
+
+    return () => {
+      socketRef.current?.emit("leaveChat", { targetUserId });
+    };
   }, [targetUserId, navigate]);
 
 

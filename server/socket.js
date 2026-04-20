@@ -151,6 +151,13 @@ export const createSocketServer = (httpServer) => {
       }
     });
 
+    socket.on("leaveChat", ({ targetUserId }) => {
+      if (!targetUserId) return;
+
+      const roomId = getSecretRoomId(socket.user._id, targetUserId);
+      socket.leave(roomId);
+    });
+
     socket.on("sendMessage", async ({ targetUserId, text }, callback) => {
       try {
         if (!targetUserId || !text?.trim()) {
