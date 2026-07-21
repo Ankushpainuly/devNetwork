@@ -114,12 +114,12 @@ export default function VerifyOTP() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080810] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(220,252,231,0.95),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(233,213,255,0.45),_transparent_24%),linear-gradient(180deg,_#fafcf9,_#f3f6f3)] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
 
         {/* ── LOGO ── */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-semibold text-indigo-400 tracking-tight">
+          <h1 className="text-3xl font-semibold text-emerald-600 tracking-tight">
             DevNetwork
           </h1>
           <p className="text-slate-500 text-sm mt-1">
@@ -128,18 +128,18 @@ export default function VerifyOTP() {
         </div>
 
         {/* ── CARD ── */}
-        <div className="bg-[#14141f] border border-[#1e1e35] rounded-2xl p-8">
+        <div className="rounded-2xl border border-white/80 bg-white/90 p-8 shadow-[0_24px_60px_rgba(148,163,184,0.16)] backdrop-blur">
 
           {/* Icon */}
-          <div className="w-14 h-14 bg-indigo-500/10 border border-indigo-500/20
+          <div className="w-14 h-14 bg-brand-50 border border-emerald-100
                           rounded-2xl flex items-center justify-center mb-5">
-            <svg className="w-7 h-7 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-7 h-7 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
                 d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
             </svg>
           </div>
 
-          <h2 className="text-xl font-semibold text-slate-100 mb-1">
+          <h2 className="text-xl font-semibold text-slate-900 mb-1">
             Verify your email
           </h2>
           <p className="text-slate-500 text-sm mb-6">
@@ -165,10 +165,10 @@ export default function VerifyOTP() {
                   onPaste={handlePaste}
                   className={`w-12 h-14 text-center text-xl font-semibold
                              rounded-lg border transition-all outline-none
-                             bg-[#0f0f1a] text-slate-100
+                             bg-white text-slate-900
                              ${digit
-                               ? "border-indigo-500 bg-indigo-500/10 text-indigo-300"
-                               : "border-[#1e1e35] focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                               ? "border-brand-500 bg-brand-50 text-emerald-600"
+                               : "border-slate-200 focus:border-brand-500 focus:ring-1 focus:ring-brand-500"
                              }`}
                 />
               ))}
@@ -178,7 +178,7 @@ export default function VerifyOTP() {
             <button
               type="submit"
               disabled={loading || otp.join("").length < 6}
-              className="w-full bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50
+              className="w-full bg-brand-500 hover:bg-brand-600 disabled:opacity-50
                          disabled:cursor-not-allowed text-white font-medium py-3
                          rounded-lg transition-all duration-200 text-sm"
             >
@@ -206,7 +206,7 @@ export default function VerifyOTP() {
               disabled={countdown > 0 || resending}
               className="text-sm font-medium transition-colors
                          disabled:cursor-not-allowed
-                         text-indigo-400 hover:text-indigo-300
+                         text-emerald-600 hover:text-emerald-700
                          disabled:text-slate-600"
             >
               {resending
@@ -225,7 +225,7 @@ export default function VerifyOTP() {
           Wrong email?{" "}
           <button
             onClick={() => navigate("/signup", { replace: true })}
-            className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+            className="text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
           >
             Go back
           </button>

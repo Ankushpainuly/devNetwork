@@ -24,7 +24,7 @@ const connectionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// ─── PREVENT DUPLICATE REQUESTS ──/using compound index to increse efficency for search 
+// PREVENT DUPLICATE REQUESTS using compound index to increse efficency for search 
 connectionSchema.index({ sender: 1, receiver: 1 }, { unique: true });
 
 export default mongoose.model("Connection", connectionSchema);

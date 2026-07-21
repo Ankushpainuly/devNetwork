@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ThemeToggle from "../components/ThemeToggle";
 
 const stats = [
   { value: "10K+", label: "Developer Profiles" },
@@ -50,30 +51,31 @@ const steps = [
 
 export default function Landing() {
   return (
-    <div className="min-h-screen overflow-hidden bg-dark-900 text-slate-100">
+    <div className="min-h-screen overflow-hidden bg-dark-900 text-slate-900">
       <div className="relative">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(99,102,241,0.22),_transparent_35%),radial-gradient(circle_at_top_right,_rgba(165,180,252,0.12),_transparent_28%),linear-gradient(180deg,_rgba(20,20,31,0.96),_rgba(8,8,16,1))]" />
-        <div className="absolute left-[-8rem] top-24 h-72 w-72 rounded-full bg-brand-500/10 blur-3xl" />
-        <div className="absolute right-[-6rem] top-64 h-80 w-80 rounded-full bg-brand-300/10 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(217,246,227,0.95),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(227,223,255,0.72),_transparent_28%),linear-gradient(180deg,_rgba(250,252,249,0.98),_rgba(244,247,244,1))]" />
+        <div className="absolute left-[-8rem] top-24 h-72 w-72 rounded-full bg-emerald-200/55 blur-3xl" />
+        <div className="absolute right-[-6rem] top-64 h-80 w-80 rounded-full bg-violet-200/45 blur-3xl" />
 
         <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col px-4 pb-16 pt-6 sm:px-6 lg:px-8">
-          <header className="rounded-3xl border border-dark-500 bg-dark-700/70 px-5 py-4 backdrop-blur">
+          <header className="rounded-3xl border border-white/70 bg-white/88 px-5 py-4 shadow-[0_20px_60px_rgba(148,163,184,0.12)] backdrop-blur">
             <div className="flex items-center justify-between gap-4">
               <div>
-                <p className="text-2xl font-semibold tracking-tight text-white">DevNetwork</p>
-                <p className="text-sm text-slate-400">The social platform built for developers</p>
+                <p className="text-2xl font-semibold tracking-tight text-slate-950">DevNetwork</p>
+                <p className="text-sm text-slate-500">The social platform built for developers</p>
               </div>
 
               <div className="flex items-center gap-3">
+                <ThemeToggle compact />
                 <Link
                   to="/login"
-                  className="rounded-full border border-dark-400 px-4 py-2 text-sm font-medium text-slate-200 transition hover:border-brand-500 hover:text-white"
+                  className="rounded-full border border-emerald-100 bg-white/90 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-brand-500 hover:text-slate-950"
                 >
                   Log in
                 </Link>
                 <Link
                   to="/signup"
-                  className="rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_0_24px_rgba(99,102,241,0.35)] transition hover:bg-brand-600"
+                  className="rounded-full bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white shadow-[0_18px_35px_rgba(34,197,94,0.24)] transition hover:bg-brand-600"
                 >
                   Get Started
                 </Link>
@@ -84,13 +86,13 @@ export default function Landing() {
           <main className="flex-1 pt-14 lg:pt-20">
             <section>
               <div className="mx-auto max-w-4xl text-center">
-                <span className="inline-flex rounded-full border border-brand-500/30 bg-brand-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-brand-300">
+                <span className="inline-flex rounded-full border border-emerald-200 bg-emerald-50/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-emerald-600">
                   Build Your Developer Circle
                 </span>
-                <h1 className="mt-6 text-5xl font-semibold tracking-tight text-white sm:text-6xl lg:text-7xl">
+                <h1 className="mt-6 text-5xl font-semibold tracking-tight text-slate-950 sm:text-6xl lg:text-7xl">
                   One place to show your work, find developers, and start real tech conversations.
                 </h1>
-                <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg">
+                <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
                   DevNetwork helps developers create strong profiles, share posts, connect with the right people,
                   and chat in real time around projects, learning, and collaboration.
                 </p>
@@ -98,13 +100,13 @@ export default function Landing() {
                 <div className="mt-8 flex flex-wrap justify-center gap-4">
                   <Link
                     to="/signup"
-                    className="rounded-2xl bg-brand-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_rgba(99,102,241,0.25)] transition hover:bg-brand-600"
+                    className="rounded-2xl bg-brand-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_16px_32px_rgba(34,197,94,0.22)] transition hover:bg-brand-600"
                   >
                     Create Your Account
                   </Link>
                   <Link
                     to="/login"
-                    className="rounded-2xl border border-dark-400 bg-dark-700/60 px-6 py-3.5 text-sm font-semibold text-slate-200 transition hover:border-brand-500 hover:text-white"
+                    className="rounded-2xl border border-emerald-100 bg-white/85 px-6 py-3.5 text-sm font-semibold text-slate-700 shadow-[0_12px_28px_rgba(148,163,184,0.08)] transition hover:border-brand-500 hover:text-slate-950"
                   >
                     Explore Your Network
                   </Link>
@@ -115,24 +117,31 @@ export default function Landing() {
                 {features.map((feature, index) => (
                   <article
                     key={feature.title}
-                    className="rounded-[1.75rem] border border-dark-500 bg-dark-700/75 p-6 shadow-[0_16px_40px_rgba(8,8,16,0.24)] backdrop-blur"
+                    className="rounded-[1.75rem] border border-white/75 bg-white/80 p-6 shadow-[0_18px_46px_rgba(148,163,184,0.14)] backdrop-blur"
                   >
                     <div className="flex items-center gap-4">
-                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-brand-500/15 text-sm font-semibold text-brand-300">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-emerald-50 text-sm font-semibold text-emerald-600">
                         0{index + 1}
                       </span>
-                      <h2 className="text-lg font-semibold text-white">{feature.title}</h2>
+                      <h2 className="text-lg font-semibold text-slate-900">{feature.title}</h2>
                     </div>
-                    <p className="mt-4 text-sm leading-6 text-slate-400">{feature.description}</p>
+                    <p className="mt-4 text-sm leading-6 text-slate-600">{feature.description}</p>
                   </article>
                 ))}
               </div>
 
               <div className="mt-8 grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                {stats.map((item) => (
-                  <div key={item.label} className="rounded-2xl border border-dark-500 bg-dark-700/55 p-5 text-center backdrop-blur">
-                    <p className="text-3xl font-semibold text-brand-300">{item.value}</p>
-                    <p className="mt-2 text-sm text-slate-400">{item.label}</p>
+                {stats.map((item, index) => (
+                  <div
+                    key={item.label}
+                    className={`rounded-2xl border p-5 text-center shadow-[0_16px_40px_rgba(148,163,184,0.1)] backdrop-blur ${
+                      index % 2 === 0
+                        ? "border-emerald-100 bg-emerald-50/70"
+                        : "border-violet-100 bg-violet-50/65"
+                    }`}
+                  >
+                    <p className="text-3xl font-semibold text-slate-900">{item.value}</p>
+                    <p className="mt-2 text-sm text-slate-600">{item.label}</p>
                   </div>
                 ))}
               </div>
@@ -140,10 +149,10 @@ export default function Landing() {
 
             <section className="mt-24">
               <div className="text-center">
-                <h2 className="text-4xl font-semibold tracking-tight text-white">
-                  How <span className="text-brand-300">DevNetwork</span> Works
+                <h2 className="text-4xl font-semibold tracking-tight text-slate-950">
+                  How <span className="text-emerald-600">DevNetwork</span> Works
                 </h2>
-                <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-400">
+                <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600">
                   A simple flow for developers who want to present themselves well, build meaningful connections,
                   and collaborate faster.
                 </p>
@@ -153,21 +162,21 @@ export default function Landing() {
                 {steps.map((step) => (
                   <article
                     key={step.number}
-                    className="rounded-[2rem] border border-dark-500 bg-dark-700/75 p-8 shadow-[0_16px_40px_rgba(8,8,16,0.28)] backdrop-blur"
+                    className="rounded-[2rem] border border-white/70 bg-white/84 p-8 shadow-[0_18px_42px_rgba(148,163,184,0.15)] backdrop-blur"
                   >
-                    <p className="text-5xl font-semibold leading-none text-brand-500">{step.number}</p>
-                    <h3 className="mt-8 text-2xl font-semibold text-white">{step.title}</h3>
-                    <p className="mt-4 text-sm leading-7 text-slate-400">{step.description}</p>
+                    <p className="text-5xl font-semibold leading-none text-emerald-500">{step.number}</p>
+                    <h3 className="mt-8 text-2xl font-semibold text-slate-950">{step.title}</h3>
+                    <p className="mt-4 text-sm leading-7 text-slate-600">{step.description}</p>
                   </article>
                 ))}
               </div>
             </section>
 
-            <section className="mt-24 rounded-[2rem] border border-dark-500 bg-gradient-to-r from-dark-700 via-dark-700 to-dark-800 px-6 py-10 text-center shadow-[0_18px_50px_rgba(8,8,16,0.32)] sm:px-10">
-              <h2 className="text-3xl font-semibold text-white sm:text-4xl">
+            <section className="mt-24 rounded-[2rem] border border-white/75 bg-[linear-gradient(135deg,rgba(240,253,244,0.95),rgba(255,255,255,0.92),rgba(243,232,255,0.72))] px-6 py-10 text-center shadow-[0_22px_52px_rgba(148,163,184,0.16)] sm:px-10">
+              <h2 className="text-3xl font-semibold text-slate-950 sm:text-4xl">
                 Start building your developer presence today.
               </h2>
-              <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-400">
+              <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600">
                 Create your profile, share what you know, find other developers, and grow a network that is built for real work.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
@@ -179,7 +188,7 @@ export default function Landing() {
                 </Link>
                 <Link
                   to="/login"
-                  className="rounded-2xl border border-dark-400 px-6 py-3.5 text-sm font-semibold text-slate-200 transition hover:border-brand-500 hover:text-white"
+                  className="rounded-2xl border border-emerald-100 bg-white/85 px-6 py-3.5 text-sm font-semibold text-slate-700 transition hover:border-brand-500 hover:text-slate-950"
                 >
                   Already have an account?
                 </Link>

@@ -8,6 +8,9 @@ import { Store } from "./app/store";
 import App from "./App";
 import "./index.css";
 
+const initialTheme = localStorage.getItem("devnetwork-theme") || "light";
+document.documentElement.dataset.theme = initialTheme;
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={Store}>
@@ -17,9 +20,9 @@ createRoot(document.getElementById("root")).render(
           position="top-right"
           toastOptions={{
             style: {
-              background: "#14141f",
-              color:      "#f1f5f9",
-              border:     "1px solid #1e1e35",
+              background: initialTheme === "dark" ? "#14141f" : "#ffffff",
+              color: initialTheme === "dark" ? "#f1f5f9" : "#0f172a",
+              border: initialTheme === "dark" ? "1px solid #1e1e35" : "1px solid #d9e6dc",
               fontSize:   "13px",
             },
           }}

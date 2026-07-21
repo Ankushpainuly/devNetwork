@@ -111,12 +111,12 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080810] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(220,252,231,0.95),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(233,213,255,0.45),_transparent_24%),linear-gradient(180deg,_#fafcf9,_#f3f6f3)] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
 
         {/* ── LOGO ── */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-semibold text-indigo-400 tracking-tight">
+          <h1 className="text-3xl font-semibold text-emerald-600 tracking-tight">
             DevNetwork
           </h1>
           <p className="text-slate-500 text-sm mt-1">
@@ -124,17 +124,17 @@ export default function ForgotPassword() {
           </p>
         </div>
 
-        <div className="bg-[#14141f] border border-[#1e1e35] rounded-2xl p-8">
+        <div className="rounded-2xl border border-white/80 bg-white/90 p-8 shadow-[0_24px_60px_rgba(148,163,184,0.16)] backdrop-blur">
 
           {/* ── STEP INDICATOR ── */}
           <div className="flex items-center gap-2 mb-6">
             <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium
-              ${step >= 1 ? "bg-indigo-500 text-white" : "bg-[#1e1e35] text-slate-500"}`}>
+              ${step >= 1 ? "bg-brand-500 text-white" : "bg-slate-100 text-slate-500"}`}>
               1
             </div>
-            <div className={`flex-1 h-px ${step >= 2 ? "bg-indigo-500" : "bg-[#1e1e35]"}`}></div>
+            <div className={`flex-1 h-px ${step >= 2 ? "bg-brand-500" : "bg-slate-200"}`}></div>
             <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-medium
-              ${step >= 2 ? "bg-indigo-500 text-white" : "bg-[#1e1e35] text-slate-500"}`}>
+              ${step >= 2 ? "bg-brand-500 text-white" : "bg-slate-100 text-slate-500"}`}>
               2
             </div>
           </div>
@@ -144,7 +144,7 @@ export default function ForgotPassword() {
           ════════════════════════════════════════════ */}
           {step === 1 && (
             <>
-              <h2 className="text-xl font-semibold text-slate-100 mb-1">
+              <h2 className="text-xl font-semibold text-slate-900 mb-1">
                 Forgot password?
               </h2>
               <p className="text-slate-500 text-sm mb-6">
@@ -153,7 +153,7 @@ export default function ForgotPassword() {
 
               <form onSubmit={handleSendOTP} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1.5">
+                  <label className="block text-sm font-medium text-slate-600 mb-1.5">
                     Email address
                   </label>
                   <input
@@ -161,17 +161,16 @@ export default function ForgotPassword() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="john@gmail.com"
-                    className="w-full bg-[#0f0f1a] border border-[#1e1e35] text-slate-200
-                               placeholder-slate-600 rounded-lg px-4 py-3 text-sm
-                               focus:outline-none focus:border-indigo-500 focus:ring-1
-                               focus:ring-indigo-500 transition-all"
+                    className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800
+                               placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:ring-1
+                               focus:ring-brand-500 transition-all"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50
+                  className="w-full bg-brand-500 hover:bg-brand-600 disabled:opacity-50
                              disabled:cursor-not-allowed text-white font-medium py-3
                              rounded-lg transition-all duration-200 text-sm"
                 >
@@ -196,12 +195,12 @@ export default function ForgotPassword() {
           ════════════════════════════════════════════ */}
           {step === 2 && (
             <>
-              <h2 className="text-xl font-semibold text-slate-100 mb-1">
+              <h2 className="text-xl font-semibold text-slate-900 mb-1">
                 Reset your password
               </h2>
               <p className="text-slate-500 text-sm mb-6">
                 Enter the OTP sent to{" "}
-                <span className="text-indigo-400">{email}</span>
+                <span className="text-emerald-600">{email}</span>
                 {" "}and your new password.
               </p>
 
@@ -209,7 +208,7 @@ export default function ForgotPassword() {
 
                 {/* OTP Boxes */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-3">
+                  <label className="block text-sm font-medium text-slate-600 mb-3">
                     Enter OTP
                   </label>
                   <div className="flex gap-3 justify-between">
@@ -226,10 +225,10 @@ export default function ForgotPassword() {
                         onPaste={handlePaste}
                         className={`w-12 h-14 text-center text-xl font-semibold
                                    rounded-lg border transition-all outline-none
-                                   bg-[#0f0f1a] text-slate-100
+                                   bg-white text-slate-900
                                    ${digit
-                                     ? "border-indigo-500 bg-indigo-500/10 text-indigo-300"
-                                     : "border-[#1e1e35] focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                                     ? "border-brand-500 bg-brand-50 text-emerald-600"
+                                     : "border-slate-200 focus:border-brand-500 focus:ring-1 focus:ring-brand-500"
                                    }`}
                       />
                     ))}
@@ -243,7 +242,7 @@ export default function ForgotPassword() {
                       disabled={countdown > 0}
                       className="text-xs font-medium transition-colors
                                  disabled:cursor-not-allowed
-                                 text-indigo-400 hover:text-indigo-300
+                                 text-emerald-600 hover:text-emerald-700
                                  disabled:text-slate-600"
                     >
                       {countdown > 0 ? `Resend in ${countdown}s` : "Resend OTP"}
@@ -253,7 +252,7 @@ export default function ForgotPassword() {
 
                 {/* New Password */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-400 mb-1.5">
+                  <label className="block text-sm font-medium text-slate-600 mb-1.5">
                     New password
                   </label>
                   <div className="relative">
@@ -262,16 +261,15 @@ export default function ForgotPassword() {
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Min 6 characters"
-                      className="w-full bg-[#0f0f1a] border border-[#1e1e35] text-slate-200
-                                 placeholder-slate-600 rounded-lg px-4 py-3 text-sm pr-16
-                                 focus:outline-none focus:border-indigo-500 focus:ring-1
-                                 focus:ring-indigo-500 transition-all"
+                      className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 pr-16 text-sm text-slate-800
+                                 placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:ring-1
+                                 focus:ring-brand-500 transition-all"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2
-                                 text-slate-500 hover:text-slate-300 text-xs transition-colors"
+                                 text-slate-500 hover:text-slate-700 text-xs transition-colors"
                     >
                       {showPassword ? "Hide" : "Show"}
                     </button>
@@ -281,7 +279,7 @@ export default function ForgotPassword() {
                 <button
                   type="submit"
                   disabled={loading || otp.join("").length < 6 || newPassword.length < 6}
-                  className="w-full bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50
+                  className="w-full bg-brand-500 hover:bg-brand-600 disabled:opacity-50
                              disabled:cursor-not-allowed text-white font-medium py-3
                              rounded-lg transition-all duration-200 text-sm"
                 >
@@ -302,7 +300,7 @@ export default function ForgotPassword() {
               {/* Back to step 1 */}
               <button
                 onClick={() => { setStep(1); setOtp(["","","","","",""]); }}
-                className="w-full text-center text-slate-500 hover:text-slate-300
+                className="w-full text-center text-slate-500 hover:text-slate-700
                            text-sm mt-4 transition-colors"
               >
                 ← Use different email
@@ -317,7 +315,7 @@ export default function ForgotPassword() {
           Remember your password?{" "}
           <Link
             to="/login"
-            className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+            className="text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
           >
             Sign in
           </Link>

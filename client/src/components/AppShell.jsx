@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import toast from "react-hot-toast";
@@ -6,6 +6,7 @@ import api from "../api/axios";
 import { clearUser } from "../features/auth/userSlice";
 import UserAvatar from "./UserAvatar";
 import { connectAppSocket, disconnectAppSocket } from "../socket/appSocket";
+import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
   { to: "/feed", label: "Feed" },
@@ -27,7 +28,9 @@ export default function AppShell({ children }) {
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [showMore, setShowMore] = useState(false);
+  const [incomingCall, setIncomingCall] = useState(null);
 
   useEffect(() => {
     if (!user?._id) return;
@@ -37,10 +40,32 @@ export default function AppShell({ children }) {
       toast.error("Realtime connection failed");
     };
 
+    const handleIncomingCall = ({ fromUser, callType }) => {
+      setIncomingCall({ fromUser, callType });
+    };
+
+    const handleCallEnded = ({ fromUserId }) => {
+      setIncomingCall((current) =>
+        current?.fromUser?._id === fromUserId ? null : current
+      );
+    };
+
+    const handleCallRejected = ({ fromUserId }) => {
+      setIncomingCall((current) =>
+        current?.fromUser?._id === fromUserId ? null : current
+      );
+    };
+
     socket.on("connect_error", handleConnectError);
+    socket.on("call:incoming", handleIncomingCall);
+    socket.on("call:ended", handleCallEnded);
+    socket.on("call:rejected", handleCallRejected);
 
     return () => {
       socket.off("connect_error", handleConnectError);
+      socket.off("call:incoming", handleIncomingCall);
+      socket.off("call:ended", handleCallEnded);
+      socket.off("call:rejected", handleCallRejected);
       disconnectAppSocket();
     };
   }, [user?._id]);
@@ -57,8 +82,62 @@ export default function AppShell({ children }) {
     }
   };
 
+  const handleRejectIncomingCall = () => {
+    if (!incomingCall?.fromUser?._id) return;
+
+    connectAppSocket().emit("rejectCall", {
+      targetUserId: incomingCall.fromUser._id,
+    });
+    setIncomingCall(null);
+  };
+
+  const handleAcceptIncomingCall = () => {
+    if (!incomingCall?.fromUser?._id) return;
+
+    const acceptedCall = incomingCall;
+    setIncomingCall(null);
+    navigate(`/chat/${acceptedCall.fromUser._id}`, {
+      state: {
+        autoAnswer: true,
+        callType: acceptedCall.callType,
+      },
+      replace: location.pathname === `/chat/${acceptedCall.fromUser._id}`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-dark-900 text-slate-100">
+      {incomingCall ? (
+        <div className="fixed inset-x-4 top-4 z-50 mx-auto max-w-md rounded-3xl border border-brand-400/30 bg-dark-700/95 p-4 shadow-[0_18px_50px_rgba(8,8,16,0.45)] backdrop-blur">
+          <div className="flex items-start gap-3">
+            <UserAvatar user={incomingCall.fromUser} size="md" />
+            <div className="min-w-0 flex-1">
+              <p className="font-semibold text-white">Incoming {incomingCall.callType} call</p>
+              <p className="truncate text-sm text-slate-300">{incomingCall.fromUser.name}</p>
+              <p className="mt-1 text-xs text-slate-400">
+                {incomingCall.fromUser.headline || "Developer on DevNetwork"}
+              </p>
+            </div>
+          </div>
+          <div className="mt-4 flex gap-3">
+            <button
+              type="button"
+              onClick={handleRejectIncomingCall}
+              className="flex-1 rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm font-medium text-slate-200"
+            >
+              Decline
+            </button>
+            <button
+              type="button"
+              onClick={handleAcceptIncomingCall}
+              className="flex-1 rounded-2xl bg-brand-500 px-4 py-3 text-sm font-semibold text-white"
+            >
+              Accept
+            </button>
+          </div>
+        </div>
+      ) : null}
+
       <div className="mx-auto flex min-h-screen max-w-7xl flex-col gap-6 px-4 py-4 lg:flex-row lg:px-6 lg:py-6">
         <div className="sticky top-0 z-30 -mx-4 border-b border-dark-500 bg-dark-900/95 px-4 py-3 backdrop-blur lg:hidden">
           <div className="mb-3 flex items-center justify-between">
@@ -68,6 +147,7 @@ export default function AppShell({ children }) {
             </div>
 
             <div className="flex items-center gap-2">
+              <ThemeToggle compact />
               <button
                 type="button"
                 onClick={() => navigate(`/profile/${user?._id}`)}
@@ -105,14 +185,17 @@ export default function AppShell({ children }) {
         </div>
 
         <aside className="hidden w-full rounded-3xl border border-dark-500 bg-dark-700/80 p-5 lg:sticky lg:top-6 lg:block lg:h-fit lg:w-72">
-          <div className="mb-8 flex items-center gap-3">
-            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500/15 text-xl font-bold text-brand-300">
-              D
+          <div className="mb-8 flex items-start justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500/15 text-xl font-bold text-brand-300">
+                D
+              </div>
+              <div>
+                <h1 className="text-xl font-semibold text-white">DevNetwork</h1>
+                <p className="text-sm text-slate-400">Build with developers</p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-xl font-semibold text-white">DevNetwork</h1>
-              <p className="text-sm text-slate-400">Build with developers</p>
-            </div>
+            <ThemeToggle compact />
           </div>
 
           <div className="mb-6 flex items-center gap-3 rounded-2xl border border-dark-500 bg-dark-800 p-3">

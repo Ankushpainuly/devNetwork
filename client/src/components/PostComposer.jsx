@@ -37,7 +37,7 @@ export default function PostComposer({ onCreate, loading }) {
           onChange={(event) =>
             setForm((current) => ({ ...current, visibility: event.target.value }))
           }
-          className="rounded-xl border border-dark-400 bg-dark-800 px-3 py-2 text-sm text-slate-200 outline-none"
+          className="rounded-xl border border-dark-400 bg-dark-800 px-3 py-2 text-sm text-slate-200 outline-none focus:border-brand-500"
         >
           <option value="public">Public</option>
           <option value="connections">Connections</option>
@@ -51,7 +51,7 @@ export default function PostComposer({ onCreate, loading }) {
         }
         rows={4}
         placeholder="What are you building today?"
-        className="mb-4 w-full rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none placeholder:text-slate-500"
+        className="mb-4 w-full rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-brand-500"
       />
 
       <div className="grid gap-4 md:grid-cols-2">
@@ -61,7 +61,7 @@ export default function PostComposer({ onCreate, loading }) {
             setForm((current) => ({ ...current, tags: event.target.value }))
           }
           placeholder="Tags: react,node,mongodb"
-          className="rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none placeholder:text-slate-500"
+          className="rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-brand-500"
         />
         <input
           type="file"
@@ -80,7 +80,7 @@ export default function PostComposer({ onCreate, loading }) {
         <button
           type="button"
           onClick={() => setShowCode((current) => !current)}
-          className="text-sm font-medium text-brand-300 transition hover:text-white"
+          className="text-sm font-medium text-brand-300 transition hover:text-brand-500"
         >
           {showCode ? "Hide code snippet" : "Add code snippet"}
         </button>
@@ -94,7 +94,7 @@ export default function PostComposer({ onCreate, loading }) {
               setForm((current) => ({ ...current, language: event.target.value }))
             }
             placeholder="Language"
-            className="rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none"
+            className="rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none focus:border-brand-500"
           />
           <textarea
             value={form.code}
@@ -103,7 +103,7 @@ export default function PostComposer({ onCreate, loading }) {
             }
             rows={6}
             placeholder="Paste your code here"
-            className="w-full rounded-2xl border border-dark-400 bg-[#0b1220] px-4 py-3 font-mono text-sm text-slate-100 outline-none"
+            className="w-full rounded-2xl border border-slate-800 bg-[#0b1220] px-4 py-3 font-mono text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-brand-500"
           />
         </div>
       )}

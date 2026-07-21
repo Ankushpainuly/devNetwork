@@ -56,7 +56,7 @@ const ProtectedRoute = ({ children }) => {
     return (
       <div className="min-h-screen bg-dark-900 flex items-center justify-center">
         <svg
-          className="animate-spin w-8 h-8 text-indigo-500"
+          className="animate-spin w-8 h-8 text-brand-500"
           viewBox="0 0 24 24"
           fill="none"
         >

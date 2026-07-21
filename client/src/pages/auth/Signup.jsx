@@ -49,12 +49,12 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080810] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(220,252,231,0.95),_transparent_30%),radial-gradient(circle_at_top_right,_rgba(233,213,255,0.45),_transparent_24%),linear-gradient(180deg,_#fafcf9,_#f3f6f3)] flex items-center justify-center px-4">
       <div className="w-full max-w-md">
 
         {/* ── LOGO ── */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-semibold text-indigo-400 tracking-tight">
+          <h1 className="text-3xl font-semibold text-emerald-600 tracking-tight">
             DevNetwork
           </h1>
           <p className="text-slate-500 text-sm mt-1">
@@ -63,8 +63,8 @@ export default function Signup() {
         </div>
 
         {/* ── CARD ── */}
-        <div className="bg-[#14141f] border border-[#1e1e35] rounded-2xl p-8">
-          <h2 className="text-xl font-semibold text-slate-100 mb-1">
+        <div className="rounded-2xl border border-white/80 bg-white/90 p-8 shadow-[0_24px_60px_rgba(148,163,184,0.16)] backdrop-blur">
+          <h2 className="text-xl font-semibold text-slate-900 mb-1">
             Create your account
           </h2>
           <p className="text-slate-500 text-sm mb-6">
@@ -75,8 +75,8 @@ export default function Signup() {
           <button
             onClick={handleGoogleLogin}
             className="w-full flex items-center justify-center gap-3
-                       bg-[#1a1a2e] hover:bg-[#252540] border border-[#2d2d50]
-                       text-slate-300 rounded-lg py-3 text-sm font-medium
+                       bg-white hover:bg-emerald-50 border border-slate-200
+                       text-slate-700 rounded-lg py-3 text-sm font-medium
                        transition-all duration-200 mb-5"
           >
             <svg width="18" height="18" viewBox="0 0 24 24">
@@ -90,9 +90,9 @@ export default function Signup() {
 
           {/* ── DIVIDER ── */}
           <div className="flex items-center gap-3 mb-5">
-            <div className="flex-1 h-px bg-[#1e1e35]"></div>
+            <div className="flex-1 h-px bg-slate-200"></div>
             <span className="text-slate-600 text-xs">or sign up with email</span>
-            <div className="flex-1 h-px bg-[#1e1e35]"></div>
+            <div className="flex-1 h-px bg-slate-200"></div>
           </div>
 
           {/* ── FORM ── */}
@@ -100,7 +100,7 @@ export default function Signup() {
 
             {/* Name */}
             <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1.5">
+              <label className="block text-sm font-medium text-slate-600 mb-1.5">
                 Full name
               </label>
               <input
@@ -109,16 +109,15 @@ export default function Signup() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="John Doe"
-                className="w-full bg-[#0f0f1a] border border-[#1e1e35] text-slate-200
-                           placeholder-slate-600 rounded-lg px-4 py-3 text-sm
-                           focus:outline-none focus:border-indigo-500 focus:ring-1
-                           focus:ring-indigo-500 transition-all"
+                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800
+                           placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:ring-1
+                           focus:ring-brand-500 transition-all"
               />
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1.5">
+              <label className="block text-sm font-medium text-slate-600 mb-1.5">
                 Email address
               </label>
               <input
@@ -127,16 +126,15 @@ export default function Signup() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="john@gmail.com"
-                className="w-full bg-[#0f0f1a] border border-[#1e1e35] text-slate-200
-                           placeholder-slate-600 rounded-lg px-4 py-3 text-sm
-                           focus:outline-none focus:border-indigo-500 focus:ring-1
-                           focus:ring-indigo-500 transition-all"
+                className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800
+                           placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:ring-1
+                           focus:ring-brand-500 transition-all"
               />
             </div>
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-slate-400 mb-1.5">
+              <label className="block text-sm font-medium text-slate-600 mb-1.5">
                 Password
               </label>
               <div className="relative">
@@ -146,16 +144,15 @@ export default function Signup() {
                   value={form.password}
                   onChange={handleChange}
                   placeholder="Min 6 characters"
-                  className="w-full bg-[#0f0f1a] border border-[#1e1e35] text-slate-200
-                             placeholder-slate-600 rounded-lg px-4 py-3 text-sm pr-16
-                             focus:outline-none focus:border-indigo-500 focus:ring-1
-                             focus:ring-indigo-500 transition-all"
+                  className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 pr-16 text-sm text-slate-800
+                             placeholder-slate-400 focus:outline-none focus:border-brand-500 focus:ring-1
+                             focus:ring-brand-500 transition-all"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 -translate-y-1/2
-                             text-slate-500 hover:text-slate-300 text-xs
+                             text-slate-500 hover:text-slate-700 text-xs
                              transition-colors"
                 >
                   {showPassword ? "Hide" : "Show"}
@@ -167,7 +164,7 @@ export default function Signup() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-500 hover:bg-indigo-600 disabled:opacity-50
+              className="w-full bg-brand-500 hover:bg-brand-600 disabled:opacity-50
                          disabled:cursor-not-allowed text-white font-medium py-3
                          rounded-lg transition-all duration-200 text-sm mt-2"
             >
@@ -191,7 +188,7 @@ export default function Signup() {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
+            className="text-emerald-600 hover:text-emerald-700 font-medium transition-colors"
           >
             Sign in
           </Link>

@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import { Server } from "socket.io"
+import { Server } from "socket.io";
 import jwt from "jsonwebtoken";
 import User from "./models/user.js";
 import Chat from "./models/chat.js";
@@ -62,6 +62,30 @@ const markUserOffline = async (io, userId) => {
   });
 
   emitPresenceUpdate(io, userId, false, lastSeen);
+};
+
+const buildCallerPreview = (user) => ({
+  _id: user._id.toString(),
+  name: user.name,
+  avatar: user.avatar || "",
+  headline: user.headline || "",
+  subscription: user.subscription,
+  isOnline: true,
+  lastSeen: null,
+});
+
+const emitToUser = (userId, eventName, payload) => {
+  const sockets = connectedUsers.get(userId.toString());
+
+  if (!sockets?.size) {
+    return false;
+  }
+
+  sockets.forEach((socketId) => {
+    payload.io.to(socketId).emit(eventName, payload.data);
+  });
+
+  return true;
 };
 
 export const createSocketServer = (httpServer) => {
@@ -156,6 +180,158 @@ export const createSocketServer = (httpServer) => {
 
       const roomId = getSecretRoomId(socket.user._id, targetUserId);
       socket.leave(roomId);
+    });
+
+    socket.on("callUser", async ({ targetUserId, callType }, callback) => {
+      try {
+        if (!targetUserId || !["audio", "video"].includes(callType)) {
+          callback?.({ success: false, message: "Invalid call request" });
+          return;
+        }
+
+        const isConnected = await ensureAcceptedConnection(
+          socket.user._id,
+          targetUserId
+        );
+
+        if (!isConnected) {
+          callback?.({
+            success: false,
+            message: "You can call only accepted connections",
+          });
+          return;
+        }
+
+        const delivered = emitToUser(targetUserId, "call:incoming", {
+          io,
+          data: {
+            fromUser: buildCallerPreview(socket.user),
+            callType,
+          },
+        });
+
+        if (!delivered) {
+          callback?.({ success: false, message: "User is not online right now" });
+          return;
+        }
+
+        callback?.({ success: true });
+      } catch (error) {
+        callback?.({ success: false, message: error.message });
+      }
+    });
+
+    socket.on("acceptCall", async ({ targetUserId, callType }) => {
+      if (!targetUserId || !["audio", "video"].includes(callType)) return;
+
+      const isConnected = await ensureAcceptedConnection(
+        socket.user._id,
+        targetUserId
+      );
+
+      if (!isConnected) return;
+
+      emitToUser(targetUserId, "call:accepted", {
+        io,
+        data: {
+          fromUserId: socket.user._id.toString(),
+          callType,
+        },
+      });
+    });
+
+    socket.on("rejectCall", async ({ targetUserId }) => {
+      if (!targetUserId) return;
+
+      const isConnected = await ensureAcceptedConnection(
+        socket.user._id,
+        targetUserId
+      );
+
+      if (!isConnected) return;
+
+      emitToUser(targetUserId, "call:rejected", {
+        io,
+        data: {
+          fromUserId: socket.user._id.toString(),
+        },
+      });
+    });
+
+    socket.on("endCall", async ({ targetUserId }) => {
+      if (!targetUserId) return;
+
+      const isConnected = await ensureAcceptedConnection(
+        socket.user._id,
+        targetUserId
+      );
+
+      if (!isConnected) return;
+
+      emitToUser(targetUserId, "call:ended", {
+        io,
+        data: {
+          fromUserId: socket.user._id.toString(),
+        },
+      });
+    });
+
+    socket.on("webrtc:offer", async ({ targetUserId, offer, callType }) => {
+      if (!targetUserId || !offer) return;
+
+      const isConnected = await ensureAcceptedConnection(
+        socket.user._id,
+        targetUserId
+      );
+
+      if (!isConnected) return;
+
+      emitToUser(targetUserId, "webrtc:offer", {
+        io,
+        data: {
+          fromUserId: socket.user._id.toString(),
+          offer,
+          callType,
+        },
+      });
+    });
+
+    socket.on("webrtc:answer", async ({ targetUserId, answer }) => {
+      if (!targetUserId || !answer) return;
+
+      const isConnected = await ensureAcceptedConnection(
+        socket.user._id,
+        targetUserId
+      );
+
+      if (!isConnected) return;
+
+      emitToUser(targetUserId, "webrtc:answer", {
+        io,
+        data: {
+          fromUserId: socket.user._id.toString(),
+          answer,
+        },
+      });
+    });
+
+    socket.on("webrtc:ice-candidate", async ({ targetUserId, candidate }) => {
+      if (!targetUserId || !candidate) return;
+
+      const isConnected = await ensureAcceptedConnection(
+        socket.user._id,
+        targetUserId
+      );
+
+      if (!isConnected) return;
+
+      emitToUser(targetUserId, "webrtc:ice-candidate", {
+        io,
+        data: {
+          fromUserId: socket.user._id.toString(),
+          candidate,
+        },
+      });
     });
 
     socket.on("sendMessage", async ({ targetUserId, text }, callback) => {

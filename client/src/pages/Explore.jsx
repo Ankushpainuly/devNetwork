@@ -96,18 +96,18 @@ export default function Explore() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Search by name or headline"
-            className="rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none"
+            className="rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-brand-500"
           />
           <input
             value={skills}
             onChange={(event) => setSkills(event.target.value)}
             placeholder="Skills like react,node"
-            className="rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none"
+            className="rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-brand-500"
           />
           <select
             value={availability}
             onChange={(event) => setAvailability(event.target.value)}
-            className="rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none"
+            className="rounded-2xl border border-dark-400 bg-dark-800 px-4 py-3 text-sm text-slate-100 outline-none focus:border-brand-500"
           >
             <option value="">All availability</option>
             <option value="open_to_work">Open to work</option>

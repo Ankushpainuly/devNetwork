@@ -102,7 +102,7 @@ export default function PostCard({
                 />
               )}
               {postToShow.codeSnippet?.code && (
-                <div className="mt-3 rounded-2xl border border-dark-400 bg-[#0b1220] p-4">
+                <div className="mt-3 rounded-2xl border border-slate-800 bg-[#0b1220] p-4">
                   <p className="mb-2 text-xs uppercase tracking-[0.2em] text-brand-300">
                     {postToShow.codeSnippet.language || "code"}
                   </p>
@@ -135,7 +135,7 @@ export default function PostCard({
           )}
 
           {!post.repostOf && post.codeSnippet?.code && (
-            <div className="mt-4 rounded-2xl border border-dark-400 bg-[#0b1220] p-4">
+            <div className="mt-4 rounded-2xl border border-slate-800 bg-[#0b1220] p-4">
               <p className="mb-2 text-xs uppercase tracking-[0.2em] text-brand-300">
                 {post.codeSnippet.language || "code"}
               </p>
@@ -167,7 +167,7 @@ export default function PostCard({
                 className={`rounded-full px-3 py-2 text-xs font-medium transition ${
                   activeReaction === reaction
                     ? "bg-brand-500 text-white"
-                    : "bg-dark-800 text-slate-300 hover:bg-dark-600"
+                    : "bg-dark-800 text-slate-300 hover:bg-dark-600 hover:text-slate-900"
                 }`}
               >
                 {reaction} {getCount(post, reaction)}
@@ -179,7 +179,7 @@ export default function PostCard({
             <button
               type="button"
               onClick={() => setShowComments((current) => !current)}
-              className="inline-flex items-center gap-2 rounded-xl border border-dark-400 px-3 py-2 text-slate-300 hover:text-white"
+              className="inline-flex items-center gap-2 rounded-xl border border-dark-400 px-3 py-2 text-slate-300 hover:text-slate-900"
             >
               <svg
                 width="16"
@@ -202,7 +202,7 @@ export default function PostCard({
             <button
               type="button"
               onClick={() => onToggleSave(post._id)}
-              className="rounded-xl border border-dark-400 px-3 py-2 text-slate-300 hover:text-white"
+              className="rounded-xl border border-dark-400 px-3 py-2 text-slate-300 hover:text-slate-900"
             >
               {isSaved ? "Unsave" : "Save"}
             </button>
@@ -210,7 +210,7 @@ export default function PostCard({
               <button
                 type="button"
                 onClick={() => onRepost(post._id)}
-                className="rounded-xl border border-dark-400 px-3 py-2 text-slate-300 hover:text-white"
+                className="rounded-xl border border-dark-400 px-3 py-2 text-slate-300 hover:text-slate-900"
               >
                 Repost
               </button>
@@ -233,7 +233,7 @@ export default function PostCard({
                   value={commentText}
                   onChange={(event) => setCommentText(event.target.value)}
                   placeholder="Write a comment"
-                  className="flex-1 rounded-2xl border border-dark-400 bg-dark-900 px-4 py-3 text-sm text-slate-100 outline-none placeholder:text-slate-500"
+                  className="flex-1 rounded-2xl border border-dark-400 bg-dark-900 px-4 py-3 text-sm text-slate-100 outline-none placeholder:text-slate-500 focus:border-brand-500"
                 />
                 <button
                   type="submit"
