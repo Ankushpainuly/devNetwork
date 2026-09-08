@@ -18,3 +18,7 @@ npm-debug.log*
 
 # system files
 .DS_Store
+
+# k8s secrets and configmaps
+k8s/server/secrets.yml
+k8s/server/configMap.yml
