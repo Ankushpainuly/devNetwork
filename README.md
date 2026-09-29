@@ -45,6 +45,7 @@ DevNetwork is a full-stack developer networking platform where users can create 
 DevNetwork/
 ├── client/   # React frontend
 ├── server/   # Express backend
+├── K8s/      # Kubernetes (namespace, deployment, service, hpa, ingress)
 └── README.md
 ```
 
@@ -133,6 +134,12 @@ Frontend runs on:
 http://localhost:5173
 ```
 
+### RUN Both Frontend and Backend Using docker-compose:
+
+```bash
+docker-compose -f docker-compose.dev.yml up -d
+```
+
 ## Available Scripts
 
 ### Client
@@ -140,8 +147,6 @@ http://localhost:5173
 ```bash
 npm run dev
 npm run build
-npm run lint
-npm run preview
 ```
 
 ### Server
@@ -170,12 +175,9 @@ The backend includes routes for:
 - Google login requires correct OAuth credentials and callback URL setup.
 - Email features require a valid SMTP/app password configuration.
 
-## Future Improvements
+## Screenshots
+<img width="5880" height="5736" alt="image" src="https://github.com/user-attachments/assets/49971ec7-80d9-4119-8b75-11df7277526a" />
 
-- Add tests
-- Add deployment instructions
-- Add API documentation
-- Add screenshots
 
 ## Author
 
